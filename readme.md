@@ -1,26 +1,29 @@
 # Active Directory Exploitation Cheat Sheet
 
 This cheat sheet contains common enumeration and attack methods for Windows Active Directory.
-
-## Scan Network
-cme smb # enumerate smb hosts
-nmap -sP -p # ping scan
-nmap -PN -sV –top-ports 50 –open # quick scan
-nmap -PN –script smb-vuln* -p139,445 # search smb vuln
-nmap -PN -sC -sV # classic scan
-nmap -PN -sC -sV -p- # full scan
-nmap -sU -sC -sV # udp scan
+ 
+# enumerate smb hosts
+```bash
+nmap -sP -p  ping scan
+nmap -PN -sV –top-ports 50 –open  quick scan
+nmap -PN –script smb-vuln* -p139,445  search smb vuln
+nmap -PN -sC -sV  classic scan
+nmap -PN -sC -sV -p- full scan
+nmap -sU -sC -sV  udp scan
+```
 ## find AD IP
 nmcli dev show eth0 # show domain name & dns
 nslookup -type=SRV _ldap._tcp.dc._msdcs.//DOMAIN/
 zone transfert
 dig axfr @
 ## List guest access on smb share
+```bash
 enum4linux -a -u “” -p “” && enum4linux -a -u “guest” -p “”
 smbmap -u “” -p “” -P 445 -H && smbmap -u “guest” -p “” -P 445 -H
 smbclient -U ‘%’ -L // && smbclient -U ‘guest%’ -L //
 cme smb -u ” -p ” # enumerate null session
 cme smb -u ‘a’ -p ” # enumerate anonymous access
+```
 ## Enumerate ldap
 nmap -n -sV –script “ldap* and not brute” -p 389
 ldapsearch -x -h -s base
